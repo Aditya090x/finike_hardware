@@ -184,25 +184,25 @@
    * Porfolio isotope and filter
    */
   window.addEventListener('load', () => {
-    let portfolioContainer = select('.portfolio-container');
-    if (portfolioContainer) {
-      let portfolioIsotope = new Isotope(portfolioContainer, {
-        itemSelector: '.portfolio-item'
+    let productContainer = select('.product-container');
+    if (productContainer) {
+      let productIsotope = new Isotope(productContainer, {
+        itemSelector: '.product-item'
       });
 
-      let portfolioFilters = select('#portfolio-flters li', true);
+      let productFilters = select('#product-flters li', true);
 
-      on('click', '#portfolio-flters li', function(e) {
+      on('click', '#product-flters li', function(e) {
         e.preventDefault();
-        portfolioFilters.forEach(function(el) {
+        productFilters.forEach(function(el) {
           el.classList.remove('filter-active');
         });
         this.classList.add('filter-active');
 
-        portfolioIsotope.arrange({
+        productIsotope.arrange({
           filter: this.getAttribute('data-filter')
         });
-        portfolioIsotope.on('arrangeComplete', function() {
+        productIsotope.on('arrangeComplete', function() {
           AOS.refresh()
         });
       }, true);
@@ -211,16 +211,16 @@
   });
 
   /**
-   * Initiate portfolio lightbox 
+   * Initiate product lightbox 
    */
-  const portfolioLightbox = GLightbox({
-    selector: '.portfolio-lightbox'
+  const productLightbox = GLightbox({
+    selector: '.product-lightbox'
   });
 
   /**
-   * Portfolio details slider
+   * product details slider
    */
-  new Swiper('.portfolio-details-slider', {
+  new Swiper('.product-details-slider', {
     speed: 400,
     loop: true,
     autoplay: {
@@ -239,11 +239,61 @@
    */
   window.addEventListener('load', () => {
     AOS.init({
-      duration: 1000,
+      duration:   2000,
       easing: "ease-in-out",
       once: true,
-      mirror: false
+      mirror: true,
     });
   });
 
 })()
+
+// products slider //
+$(document).ready(function(){
+
+  $('#itemslider').carousel({ interval: 3000 });
+  
+  $('.carousel-showmanymoveone .item').each(function(){
+  var itemToClone = $(this);
+  
+  for (var i=1;i<6;i++) {
+  itemToClone = itemToClone.next();
+  
+  if (!itemToClone.length) {
+  itemToClone = $(this).siblings(':first');
+  }
+  
+  itemToClone.children(':first-child').clone()
+  .addClass("cloneditem-"+(i))
+  .appendTo($(this));
+  }
+  });
+  });
+
+
+  const initCursor = () => {
+
+    document.addEventListener("mousemove", e => {
+      clientX = e.clientX;
+      clientY = e.clientY;
+    });
+  }
+// -----------------------------------------
+                  // team slider  
+//------------------------------------------// 
+  const productContainers = [...document.querySelectorAll('.product-container')];
+const nxtBtn = [...document.querySelectorAll('.nxt-btn')];
+const preBtn = [...document.querySelectorAll('.pre-btn')];
+
+productContainers.forEach((item, i) => {
+    let containerDimensions = item.getBoundingClientRect();
+    let containerWidth = containerDimensions.width;
+
+    nxtBtn[i].addEventListener('click', () => {
+        item.scrollLeft += containerWidth;
+    })
+
+    preBtn[i].addEventListener('click', () => {
+        item.scrollLeft -= containerWidth;
+    })
+})
